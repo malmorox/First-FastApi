@@ -1,0 +1,44 @@
+from fastapi import APIRouter, HTTPException
+from app.models.auth import LoginRequest, SignupRequest
+from app.utils.json_utils import load_json, save_json
+
+router = APIRouter(prefix="/auth", tags=["auth"])
+
+@router.post("/signup")
+def signup(data: SignupRequest):
+    db = load_json("users.json")
+    users = db["users"]
+
+    for u in users:
+        if u["username"] == data.username:
+            raise HTTPException(400, "El username ya existe")
+        if u["email"] == data.email:
+            raise HTTPException(400, "El email ya está registrado")
+
+    new_user = {
+        "id": str(len(users) + 1),
+        "username": data.username,
+        "email": data.email,
+        "password": data.password
+    }
+
+    users.append(new_user)
+    save_json(db)
+
+    return {
+        "success": True,
+        "message": "Usuario creado correctamente",
+        "user": new_user
+    }
+
+
+@router.post("/login")
+def login(data: LoginRequest):
+    db = load_json("users.json")
+    users = db["users"]
+
+    for u in users:
+        if u["username"] == data.username and u["password"] == data.password:
+            return {"success": True, "message": "Login correcto"}
+
+    raise HTTPException(401, "Credenciales incorrectas")

@@ -1,0 +1,28 @@
+{
+  "users":[
+    {
+        "id":"7000f",
+        "name":"beta",
+        "email":"user1_email@website.com",
+        "password": "1234"
+    },
+    {
+        "id":"70022",
+        "name":"username2",
+        "email":"user2_email@website.com",
+        "password": "1234"
+    },
+    {
+        "id":"70021",
+        "name":"username3",
+        "email":"user3_email@website.com",
+        "password": "1234"
+    },
+    {
+        "id":"70020",
+        "name":"username4",
+        "email":"user4_email@website.com",
+        "password": "1234"
+    }
+  ]
+}
