@@ -38,7 +38,13 @@ def login(data: LoginRequest):
     users = db["users"]
 
     for u in users:
-        if u["username"] == data.username and u["password"] == data.password:
-            return {"success": True, "message": "Login correcto"}
+        if (u["username"] == data.email_or_username or 
+            u["email"] == data.email_or_username) and u["password"] == data.password:
+            
+            return {
+                "success": True,
+                "message": "Login correcto",
+                "user": u
+            }
 
     raise HTTPException(401, "Credenciales incorrectas")
