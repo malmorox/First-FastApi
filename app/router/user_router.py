@@ -42,3 +42,21 @@ def login(data: LoginRequest):
             return {"success": True, "message": "Login correcto"}
 
     raise HTTPException(401, "Credenciales incorrectas")
+
+
+@router.get("/users")
+def get_users():
+    db = load_json("users.json")
+    return {"users": db["users"]}
+
+
+@router.get("/users/{user_id}")
+def get_user(user_id: str):
+    db = load_json("users.json")
+    users = db["users"]
+
+    for u in users:
+        if u["id"] == user_id:
+            return {"user": u}
+
+    raise HTTPException(404, "Usuario no encontrado")
