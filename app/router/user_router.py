@@ -66,3 +66,33 @@ def get_user(user_id: str):
             return {"user": u}
 
     raise HTTPException(404, "Usuario no encontrado")
+
+
+@router.put("/users/{user_id}")
+def update_user(user_id: str, data: SignupRequest):
+    db = load_json("users.json")
+    users = db["users"]
+
+    for u in users:
+        if u["id"] == user_id:
+            u["username"] = data.username
+            u["email"] = data.email
+            u["password"] = data.password
+            save_json(db)
+            return {"success": True, "message": "Usuario actualizado correctamente", "user": u}
+
+    raise HTTPException(404, "Usuario no encontrado")
+
+
+@router.delete("/users/{user_id}")
+def delete_user(user_id: str):
+    db = load_json("users.json")
+    users = db["users"]
+
+    for u in users:
+        if u["id"] == user_id:
+            users.remove(u)
+            save_json(db)
+            return {"success": True, "message": "Usuario eliminado correctamente"}
+
+    raise HTTPException(404, "Usuario no encontrado")
